@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 220" width="240" height="132" role="img" aria-label="1964-1966 Batman Logo">
+  <style>
+    .bat-spin {
+      transform-origin: 200px 110px;
+      animation: bat60s 4.5s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+    @keyframes bat60s {
+      0% {
+        transform: scale(0.02) rotate(-720deg);
+        opacity: 0;
+      }
+      28% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+      }
+      62% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+      }
+      90% {
+        transform: scale(0.02) rotate(720deg);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(0.02) rotate(720deg);
+        opacity: 0;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .bat-spin {
+        animation: none;
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+      }
+    }
+  </style>
+  <g class="bat-spin">
+    <!-- Outer Black Border & Yellow Oval -->
+    <ellipse cx="200" cy="110" rx="184" ry="96" fill="#fff200" stroke="#000000" stroke-width="10"/>
+    <!-- 1964-66 Classic Rounded-Scallop Bat Silhouette -->
+    <path fill="#000000" d="
+      M 200,182
+      C 192,162 182,150 172,146
+      C 162,157 148,162 134,158
+      C 122,167 104,167 93,157
+      C 60,145 36,127 28,108
+      C 36,75 74,47 125,36
+      C 113,56 122,82 146,84
+      C 162,85 174,77 177,64
+      L 181,28
+      L 191,42
+      L 209,42
+      L 219,28
+      L 223,64
+      C 226,77 238,85 254,84
+      C 278,82 287,56 275,36
+      C 326,47 364,75 372,108
+      C 364,127 340,145 307,157
+      C 296,167 278,167 266,158
+      C 252,162 238,157 228,146
+      C 218,150 208,162 200,182
+      Z
+    "/>
+  </g>
+</svg>

@@ -1,0 +1,367 @@
+﻿<!DOCTYPE html>
+<html lang="en-IE">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1989 Batmobile — 360° Parallax Scroll Showcase v0024 (24 FPS / 240 Frames)</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --accent: #a87ffb;
+      --bg-dark: #06080e;
+      --card-bg: rgba(10, 14, 24, 0.72);
+      --card-border: rgba(168, 127, 251, 0.28);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: #f0f2f7;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow-x: hidden;
+    }
+
+    .turntable-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: clip;
+      background: radial-gradient(circle at 50% 60%, #101624 0%, #05070c 100%);
+    }
+
+    canvas#batmobile-canvas {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hud-header {
+      position: fixed;
+      top: 1.25rem;
+      left: 1.5rem;
+      right: 1.5rem;
+      z-index: 10;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.85rem 1.25rem;
+      background: rgba(8, 11, 18, 0.78);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+    }
+
+    .hud-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+    }
+
+    .badge {
+      background: rgba(168, 127, 251, 0.16);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .hud-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.85rem;
+      font-size: 0.85rem;
+    }
+
+    .hud-stat {
+      font-variant-numeric: tabular-nums;
+      color: #c3cad9;
+    }
+
+    .switch-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      background: rgba(168, 127, 251, 0.12);
+      border: 1px solid rgba(168, 127, 251, 0.35);
+      transition: background-color 0.2s ease;
+    }
+
+    .switch-link:hover {
+      background: rgba(168, 127, 251, 0.25);
+    }
+
+    .scroll-progress-track {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      z-index: 20;
+    }
+
+    .scroll-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #6c42f5, #a87ffb);
+      box-shadow: 0 0 10px rgba(168, 127, 251, 0.7);
+    }
+
+    .scroll-track {
+      position: relative;
+      z-index: 2;
+    }
+
+    .parallax-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 6rem 8vw;
+      overflow: clip;
+    }
+
+    .parallax-section:nth-child(even) {
+      justify-content: flex-end;
+    }
+
+    .story-card {
+      max-width: 440px;
+      padding: 1.75rem 2rem;
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+    }
+
+    .story-card h2 {
+      color: var(--accent);
+      font-size: 1.35rem;
+      margin-bottom: 0.6rem;
+      letter-spacing: 0.02em;
+    }
+
+    .story-card p {
+      color: #d6dceb;
+      line-height: 1.6;
+      font-size: 0.96rem;
+    }
+
+    .story-card .meta {
+      margin-top: 1rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.82rem;
+      color: #9aa5bc;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    @supports ((animation-timeline: view()) and (animation-range: entry)) {
+      @keyframes card-parallax {
+        from {
+          transform: translateY(140px);
+          opacity: 0.15;
+        }
+        50% {
+          opacity: 1;
+        }
+        to {
+          transform: translateY(-140px);
+          opacity: 0.25;
+        }
+      }
+
+      .parallax-section {
+        view-timeline: --section-tl block;
+      }
+
+      .story-card {
+        @media (prefers-reduced-motion: no-preference) {
+          animation: card-parallax linear both;
+          animation-timeline: --section-tl;
+          animation-range: entry 10% exit 90%;
+        }
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress-track">
+    <div class="scroll-progress-bar" id="progress-bar"></div>
+  </div>
+
+  <header class="hud-header">
+    <div class="hud-title">
+      <span>1989 Batmobile — Gotham Night &amp; Bat-Signal (v0024)</span>
+      <span class="badge">24 FPS · Full 240 Frames (1.5° / step)</span>
+    </div>
+    <div class="hud-controls">
+      <a class="switch-link" href="../../index.html">← Home</a>
+      <span class="hud-stat" id="load-status">Loading frames: 0 / 240</span>
+      <span class="hud-stat" id="frame-readout">Frame: 0001 / 0240 (0.0°)</span>
+      <a class="switch-link" href="../8fps/index.html">← Compare 8 FPS</a>
+      <a class="switch-link" href="../10fps/index.html">← Compare 10 FPS</a>
+      <a class="switch-link" href="../../0014/full_240fps24/index.html">v0014 Build</a>
+    </div>
+  </header>
+
+  <div class="turntable-backdrop">
+    <canvas id="batmobile-canvas" width="1920" height="1080" aria-label="1989 Batmobile 360 degree turntable animation"></canvas>
+  </div>
+
+  <main class="scroll-track">
+    <section class="parallax-section">
+      <article class="story-card">
+        <h2>01 · Full 240-Frame Reference</h2>
+        <p>This version loads all 240 frames (1.5° per step) from the v0024 render so you can compare download weight and scroll smoothness against the 8 FPS and 10 FPS builds.</p>
+        <div class="meta">
+          <span>Sequence: 24 FPS (240 Frames)</span>
+          <span>Angle: 0° – 72°</span>
+        </div>
+      </article>
+    </section>
+
+    <section class="parallax-section">
+      <article class="story-card">
+        <h2>02 · Smoothed Wheel Arches &amp; Side Pipes</h2>
+        <p>Catmull-Clark Subdivision Surface modifiers round out the wheel arches, fenders, and tyres, while Substance Painter PBR metallic maps reflect the warm overhead streetlights.</p>
+        <div class="meta">
+          <span>240 Total JPG Frames</span>
+          <span>Angle: 72° – 144°</span>
+        </div>
+      </article>
+    </section>
+
+    <section class="parallax-section">
+      <article class="story-card">
+        <h2>03 · Crimson Tail Lights &amp; Jet Exhaust</h2>
+        <p>Deep ruby-red tail lights and a warm orange afterburner ember glow inside the central turbine nozzle illuminate the drifting Gotham street mist.</p>
+        <div class="meta">
+          <span>Cycles OptiX · RTX 5080</span>
+          <span>Angle: 144° – 216°</span>
+        </div>
+      </article>
+    </section>
+
+    <section class="parallax-section">
+      <article class="story-card">
+        <h2>04 · Passenger Profile &amp; Batwings</h2>
+        <p>Unified deep glossy Batmobile black paint across the chassis, rear batwings, canopy roof, and bonnet gun covers catches crisp rim highlights from the kerbside streetlights.</p>
+        <div class="meta">
+          <span>Step Size: 1.5° per frame</span>
+          <span>Angle: 216° – 288°</span>
+        </div>
+      </article>
+    </section>
+
+    <section class="parallax-section">
+      <article class="story-card">
+        <h2>05 · Thin-Wall Canopy Glass</h2>
+        <p>Thin-wall raytraced glass transmission with soft interior cockpit illumination reveals the seats and cabin clearly from every angle of the 360° orbit.</p>
+        <div class="meta">
+          <span>Full 360° Loop Complete</span>
+          <span>Angle: 288° – 360°</span>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const TOTAL_FRAMES = 240;
+    const canvas = document.getElementById('batmobile-canvas');
+    const ctx = canvas.getContext('2d');
+    const loadStatus = document.getElementById('load-status');
+    const frameReadout = document.getElementById('frame-readout');
+    const progressBar = document.getElementById('progress-bar');
+
+    const images = new Array(TOTAL_FRAMES);
+    let loadedCount = 0;
+    let currentFrameIndex = 0;
+
+    function pad4(n) {
+      return String(n).padStart(4, '0');
+    }
+
+    function drawFrame(index) {
+      const img = images[index];
+      if (img && img.complete && img.naturalWidth > 0) {
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      }
+      const deg = ((index / TOTAL_FRAMES) * 360).toFixed(1);
+      frameReadout.textContent = `Frame: ${pad4(index + 1)} / ${pad4(TOTAL_FRAMES)} (${deg}°)`;
+    }
+
+    for (let i = 0; i < TOTAL_FRAMES; i++) {
+      const img = new Image();
+      img.src = `frames/frame_${pad4(i + 1)}.jpg`;
+      img.onload = () => {
+        loadedCount++;
+        loadStatus.textContent = loadedCount === TOTAL_FRAMES
+          ? `All ${TOTAL_FRAMES} frames ready`
+          : `Loading frames: ${loadedCount} / ${TOTAL_FRAMES}`;
+        if (i === 0) {
+          drawFrame(0);
+        }
+      };
+      images[i] = img;
+    }
+
+    function onScrollScrub() {
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const scrollFraction = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+      progressBar.style.width = `${(scrollFraction * 100).toFixed(2)}%`;
+
+      const targetIndex = Math.min(
+        TOTAL_FRAMES - 1,
+        Math.floor(scrollFraction * TOTAL_FRAMES)
+      );
+
+      if (targetIndex !== currentFrameIndex) {
+        currentFrameIndex = targetIndex;
+        requestAnimationFrame(() => drawFrame(currentFrameIndex));
+      }
+    }
+
+    window.addEventListener('scroll', onScrollScrub, { passive: true });
+    window.addEventListener('resize', onScrollScrub, { passive: true });
+
+    if (!CSS.supports('(animation-timeline: view()) and (animation-range: entry)') &&
+        !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const sections = document.querySelectorAll('.parallax-section');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const card = entry.target.querySelector('.story-card');
+          if (!card) return;
+          const rect = entry.target.getBoundingClientRect();
+          const progress = 1 - (rect.top + rect.height) / (window.innerHeight + rect.height);
+          const offset = (0.5 - progress) * 180;
+          card.style.transform = `translateY(${offset}px)`;
+        });
+      }, { threshold: Array.from({ length: 21 }, (_, i) => i / 20) });
+      sections.forEach(s => observer.observe(s));
+    }
+  </script>
+</body>
+</html>
+
+
