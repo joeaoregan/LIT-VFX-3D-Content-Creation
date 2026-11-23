@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/images/svg/logo60-64.svg" alt="1960s Spinning Batman Logo" width="240" />
+  <img src="docs/images/svg/logo-1989.svg" alt="1960s Spinning Batman Logo" width="240" />
 </p>
 
 # 3D Content Creation — 1989 Batmobile
@@ -13,35 +13,6 @@
 ![HTML5](https://img.shields.io/badge/HTML5-Parallax_Scroll-E34F26?style=flat-square&logo=html5&logoColor=white)
 
 ## 1989 Batmobile
-
-3D model of the **1989 Batmobile** (Anton Furst / Tim Burton design), originally modelled in **Autodesk Maya** (`130` individual mesh components) and PBR-textured in **Adobe Substance Painter** for the *3D Content Creation* module at LIT, then migrated into **Blender 5.3** for film-accurate `6.63 m` scaling, Cycles OptiX volumetric night lighting, and a physical 3D Bat-Signal gobo projection.
-
-> [!NOTE]  
-> Open [`index.html`](index.html) to view the interactive showcase hub featuring both YouTube turntable renders, the live Sketchfab 3D viewer, and the 8 FPS / 10 FPS / 24 FPS parallax scroll-scrubbing pages.
-
----
-
-## Final Renders
-
-### Gotham Night Volumetrics & Bat-Signal (`v0024`)
-![1989 Batmobile Gotham Night & Bat-Signal](docs/images/batmobile_blender_hdri_0008.png)
-
-| 6 Recessed Headlight Beams | Rear Tail Lights & Turbine Exhaust |
-| :---: | :---: |
-| ![6 Recessed Headlight Beams](docs/images/batmobile_6beams_front.png) | ![Rear Tail Lights and Jet Exhaust](docs/images/batmobile_night_step4_fog_rear.png) |
-
----
-
-## Showcase Links
-
-* **Interactive 3D Model (Sketchfab)**: [View 1989 Batmobile on Sketchfab](https://sketchfab.com/3d-models/1989-batmobile-e9234d292c5646eaa4c3068769edb40a) (`1989_Batmobile_Sketchfab.fbx`)
-* **YouTube Turntable Renders**:
-  * [v0014 — Gotham Night Volumetrics](https://youtu.be/OVfGsIVgiR0)
-  * [v0024 — Bat-Signal, 6 Recessed Beams & Smoothed Wheel Arches](https://youtu.be/h6Unr17XtrM)
-* **Interactive 360° Parallax Scroll Pages**:
-  * **v0014**: [8 FPS](0014/8fps/index.html) · [10 FPS](0014/10fps/index.html) · [24 FPS](0014/full_240fps24/index.html)
-  * **v0024**: [8 FPS](0024/8fps/index.html) · [10 FPS](0024/10fps/index.html) · [24 FPS](0024/full_240fps24/index.html)
-
 
 3D model of the **1989 Batmobile** (Anton Furst / Tim Burton design), originally modelled in **Autodesk Maya** (`130` individual mesh components) and PBR-textured in **Adobe Substance Painter** for the *3D Content Creation* module at LIT, then migrated into **Blender 5.3** for film-accurate `6.63 m` scaling, Cycles OptiX volumetric night lighting, and a physical 3D Bat-Signal gobo projection.
 
