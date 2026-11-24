@@ -53,6 +53,12 @@
   * [Top-Down Gotham Night & Sliding Canopy (Blender Cycles)](https://youtu.be/XgKmxd9SUYU)
   * [Top-Down Studio Playblast & Sliding Canopy (Blender 5.3)](https://youtu.be/_-2cVurDbHU)
   * [Top-Down Blueprint Wireframe & Sliding Canopy (Blender Cycles)](https://youtu.be/kJgXyCPuVtI)
+* **Original LIT Maya / Substance Videos**:
+  * [Joe O'Regan — 3D Model — 1989 Batmobile](https://youtu.be/sfj_AB1JosA)
+  * [VFX Complex Model Playblast — Wireframe on Shaded & Unsmoothed](https://youtu.be/r7bBhWpIdPg)
+  * [VFX Complex Model Playblast — Smoothed](https://youtu.be/vhfQ9UmzQXQ)
+  * [VFX Complex Model Render](https://youtu.be/vbbqeF0mDLI)
+  * [1989 Batmobile Model](https://youtu.be/nH9MvN5YS1Y)
 * **Interactive 360° Parallax Scroll Pages**:
   * **v0014**: [8 FPS](0014/8fps/index.html) · [10 FPS](0014/10fps/index.html) · [24 FPS](0014/full_240fps24/index.html)
   * **v0024**: [8 FPS](0024/8fps/index.html) · [10 FPS](0024/10fps/index.html) · [24 FPS](0024/full_240fps24/index.html) · [HDRI Top-Down Cockpit (`v0027`)](hdri-topdown/index.html) ([Live](https://joeaoregan.github.io/LIT-VFX-3D-Content-Creation/hdri-topdown/))
