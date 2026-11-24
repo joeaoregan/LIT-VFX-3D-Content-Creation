@@ -190,7 +190,7 @@
 
     // Load clean 1989 Batmobile FBX and upgrade MeshPhongMaterial -> PBR MeshPhysicalMaterial so HDRI reflections work!
     new FBXLoader().load(
-      '../1989_Batmobile_Sketchfab.fbx',
+      '../1989_Batmobile.fbx',
       (fbx) => {
         fbx.traverse((child) => {
           if (!child.isMesh) return;
