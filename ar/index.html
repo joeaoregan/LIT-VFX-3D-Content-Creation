@@ -6,7 +6,7 @@
   <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
   <link rel="icon" type="image/png" href="../favicon.png" />
   <title>1989 Batmobile — AR View (Google Pixel / iOS)</title>
-  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js" integrity="sha384-REPLACE_WITH_VERIFIED_HASH" crossorigin="anonymous"></script>
   <style>
     :root {
       color-scheme: dark;
@@ -118,15 +118,16 @@
   </header>
 
   <model-viewer
-    src="../1989_Batmobile.glb"
+    src="../1989_Batmobile.glb?v=3"
     alt="1989 Batmobile 3D Model"
     ar
-    ar-modes="webxr scene-viewer quick-look"
+    ar-modes="scene-viewer webxr quick-look"
     ar-scale="auto"
     camera-controls
     touch-action="pan-y"
+    tone-mapping="neutral"
     shadow-intensity="1"
-    exposure="0.85">
+    exposure="1.0">
     <button slot="ar-button" class="ar-button">
       View in Your Space (AR)
     </button>
