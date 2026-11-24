@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en-IE">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+  <link rel="icon" type="image/png" href="../favicon.png" />
+  <title>1989 Batmobile — AR View (Google Pixel / iOS)</title>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+  <style>
+    :root {
+      color-scheme: dark;
+      --accent: #f5b942;
+      --bg-dark: #06080e;
+      --border: rgba(245, 185, 66, 0.32);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: radial-gradient(circle at 50% 45%, #121828 0%, #05070c 100%);
+      color: #f0f2f7;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .hud-header {
+      position: fixed;
+      top: 1.25rem;
+      left: 1.5rem;
+      right: 1.5rem;
+      z-index: 10;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.85rem 1.25rem;
+      background: rgba(8, 11, 18, 0.8);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .hud-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+    }
+
+    .badge {
+      background: rgba(245, 185, 66, 0.16);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .btn {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 0.38rem 0.8rem;
+      border-radius: 6px;
+      background: rgba(245, 185, 66, 0.12);
+      border: 1px solid rgba(245, 185, 66, 0.35);
+      font-size: 0.85rem;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn:hover {
+      background: rgba(245, 185, 66, 0.25);
+    }
+
+    model-viewer {
+      width: 100vw;
+      height: 100vh;
+      --poster-color: transparent;
+    }
+
+    .ar-button {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 0.85rem 1.6rem;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #090b10;
+      font-weight: 800;
+      font-size: 0.95rem;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 10px 28px rgba(245, 185, 66, 0.4);
+    }
+  </style>
+</head>
+<body>
+  <header class="hud-header">
+    <div class="hud-title">
+      <span>1989 Batmobile — Web AR (6.63 m Scale)</span>
+      <span class="badge">Scene Viewer · WebXR · Quick Look</span>
+    </div>
+    <div>
+      <a class="btn" href="../index.html">← Home</a>
+    </div>
+  </header>
+
+  <model-viewer
+    src="../1989_Batmobile.glb"
+    alt="1989 Batmobile 3D Model"
+    ar
+    ar-modes="scene-viewer webxr quick-look"
+    ar-scale="auto"
+    camera-controls
+    touch-action="pan-y"
+    shadow-intensity="1"
+    exposure="0.4">
+    <button slot="ar-button" class="ar-button">
+      View in Your Space (AR)
+    </button>
+  </model-viewer>
+</body>
+</html>
