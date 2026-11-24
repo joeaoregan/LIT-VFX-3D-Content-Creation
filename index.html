@@ -134,6 +134,13 @@
       gap: 1.5rem;
     }
 
+    .video-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
     .media-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
@@ -320,11 +327,31 @@
       </div>
     </header>
 
-    <!-- YouTube Turntable Renders -->
+    <!-- Interactive 3D Model (Sketchfab) -->
+    <section class="section" aria-labelledby="sketchfab-heading">
+      <div class="section-header">
+        <h2 id="sketchfab-heading">Interactive 3D Model (Sketchfab)</h2>
+        <span>Clean FBX Exported: <code>1989_Batmobile.fbx</code></span>
+      </div>
+      <div class="sketchfab-card">
+        <div class="aspect-16x9">
+          <iframe
+            title="1989 Batmobile 3D Model"
+            allowfullscreen
+            mozallowfullscreen="true"
+            webkitallowfullscreen="true"
+            allow="autoplay; fullscreen; xr-spatial-tracking"
+            src="https://sketchfab.com/models/e9234d292c5646eaa4c3068769edb40a/embed?autostart=1&amp;ui_theme=dark">
+          </iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- YouTube Turntable & Top-Down Renders -->
     <section class="section" aria-labelledby="videos-heading">
       <div class="section-header">
-        <h2 id="videos-heading">YouTube Turntable Renders</h2>
-        <span>1920×1080 @ 24 fps · 360° Cycles Volumetric Passes</span>
+        <h2 id="videos-heading">YouTube Turntable &amp; Top-Down Renders</h2>
+        <span>1920×1080 @ 24 fps · 360° Volumetric &amp; Sliding Canopy Passes</span>
       </div>
       <div class="video-grid">
         <article class="media-card">
@@ -356,6 +383,56 @@
           <div class="media-card-body">
             <h3>v0024 · Bat-Signal &amp; Smoothed Bodywork</h3>
             <p>Adds the 3D Bat-Signal gobo shaft on the tarmac, 6 individual recessed headlight beams, subdivision-smoothed wheel arches, and deeper crimson tail lights.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="video-grid-3">
+        <article class="media-card">
+          <div class="aspect-16x9">
+            <iframe
+              src="https://www.youtube-nocookie.com/embed/XgKmxd9SUYU"
+              title="1989 Batmobile — Top-Down Gotham Night &amp; Sliding Canopy (Blender Cycles)"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <div class="media-card-body">
+            <h3>Top-Down Gotham Night &amp; Sliding Canopy</h3>
+            <p>Overhead 360° Cycles pass from <code>batmobile_hdri_0027.blend</code> capturing the sliding cockpit canopy under Gotham street HDRI reflections.</p>
+          </div>
+        </article>
+
+        <article class="media-card">
+          <div class="aspect-16x9">
+            <iframe
+              src="https://www.youtube-nocookie.com/embed/_-2cVurDbHU"
+              title="1989 Batmobile — Top-Down Studio Playblast &amp; Sliding Canopy (Blender 5.3)"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <div class="media-card-body">
+            <h3>Top-Down Studio Playblast &amp; Sliding Canopy</h3>
+            <p>Overhead 360° viewport playblast showcasing the rigged forward-sliding cockpit canopy (<code>Canopy_Slide_Rig</code>) and sculpted dual-seat interior.</p>
+          </div>
+        </article>
+
+        <article class="media-card">
+          <div class="aspect-16x9">
+            <iframe
+              src="https://www.youtube-nocookie.com/embed/kJgXyCPuVtI"
+              title="1989 Batmobile — Top-Down Blueprint Wireframe &amp; Sliding Canopy (Blender Cycles)"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <div class="media-card-body">
+            <h3>Top-Down Blueprint Wireframe &amp; Sliding Canopy</h3>
+            <p>Architectural cyan-blue wireframe overhead rotation from <code>batmobile_blueprint_0004.blend</code> highlighting the sliding canopy track and 6.63 m silhouette.</p>
           </div>
         </article>
       </div>
@@ -423,6 +500,10 @@
               <strong>24 FPS</strong>
               <span>240 frames · 11.24 MB</span>
             </a>
+            <a class="fps-btn cyan" href="hdri-topdown/index.html" style="grid-column: 1 / -1;">
+              <strong>HDRI Top-Down Cockpit Parallax</strong>
+              <span>10 FPS · 100 frames · 3.58 MB · v0027 sliding canopy</span>
+            </a>
             <a class="fps-btn gold" href="0024/drag360/index.html" style="grid-column: 1 / -1;">
               <strong>Click &amp; Drag 360° Viewer</strong>
               <span>Interactive drag-to-spin · Keeps Cycles fog, beams &amp; Bat-Signal</span>
@@ -450,26 +531,6 @@
             </a>
           </div>
         </article>
-      </div>
-    </section>
-
-    <!-- Sketchfab Interactive 3D Model -->
-    <section class="section" aria-labelledby="sketchfab-heading">
-      <div class="section-header">
-        <h2 id="sketchfab-heading">Interactive 3D Model (Sketchfab)</h2>
-        <span>Clean FBX Exported: <code>1989_Batmobile.fbx</code></span>
-      </div>
-      <div class="sketchfab-card">
-        <div class="aspect-16x9">
-          <iframe
-            title="1989 Batmobile 3D Model"
-            allowfullscreen
-            mozallowfullscreen="true"
-            webkitallowfullscreen="true"
-            allow="autoplay; fullscreen; xr-spatial-tracking"
-            src="https://sketchfab.com/models/e9234d292c5646eaa4c3068769edb40a/embed?autostart=1&amp;ui_theme=dark">
-          </iframe>
-        </div>
       </div>
     </section>
 
