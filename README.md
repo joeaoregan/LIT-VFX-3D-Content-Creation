@@ -30,6 +30,9 @@
 | :---: | :---: |
 | ![6 Recessed Headlight Beams](docs/images/batmobile_6beams_front.png) | ![Rear Tail Lights and Jet Exhaust](docs/images/batmobile_night_step4_fog_rear.png) |
 
+### Blueprint Wireframe (`batmobile_blueprint_0001`)
+![1989 Batmobile Blueprint Wireframe](docs/images/logo/batmobile_blueprint_preview_2.jpg)
+
 ---
 
 ## Showcase Links
@@ -38,6 +41,7 @@
 * **YouTube Turntable Renders**:
   * [v0014 — Gotham Night Volumetrics](https://youtu.be/OVfGsIVgiR0)
   * [v0024 — Bat-Signal, 6 Recessed Beams & Smoothed Wheel Arches](https://youtu.be/h6Unr17XtrM)
+  * [Blueprint — 3D Wireframe Turntable](https://youtu.be/MJmXyEqHYuQ)
 * **Interactive 360° Parallax Scroll Pages**:
   * **v0014**: [8 FPS](0014/8fps/index.html) · [10 FPS](0014/10fps/index.html) · [24 FPS](0014/full_240fps24/index.html)
   * **v0024**: [8 FPS](0024/8fps/index.html) · [10 FPS](0024/10fps/index.html) · [24 FPS](0024/full_240fps24/index.html)
