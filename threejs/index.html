@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en-IE">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1989 Batmobile — Three.js Real-Time 3D + HDRI Viewer</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --accent: #42d4f5;
+      --bg-dark: #05070c;
+      --border: rgba(66, 212, 245, 0.32);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg-dark);
+      color: #f0f2f7;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .hud-header {
+      position: fixed;
+      top: 1.25rem;
+      left: 1.5rem;
+      right: 1.5rem;
+      z-index: 10;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.85rem 1.25rem;
+      background: rgba(8, 11, 18, 0.78);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .hud-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+    }
+
+    .badge {
+      background: rgba(66, 212, 245, 0.16);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .hud-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.85rem;
+      font-size: 0.85rem;
+    }
+
+    .hud-stat {
+      color: #c3cad9;
+    }
+
+    .btn {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 0.38rem 0.8rem;
+      border-radius: 6px;
+      background: rgba(66, 212, 245, 0.12);
+      border: 1px solid rgba(66, 212, 245, 0.35);
+      font-size: 0.85rem;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn:hover {
+      background: rgba(66, 212, 245, 0.25);
+    }
+
+    #three-container {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .hint-pill {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      padding: 0.5rem 1.1rem;
+      border-radius: 999px;
+      background: rgba(8, 11, 18, 0.82);
+      border: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: #d6dceb;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <header class="hud-header">
+    <div class="hud-title">
+      <span>1989 Batmobile — Three.js 3D + Street HDRI</span>
+      <span class="badge">WebGL · urban_street_02_2k.hdr</span>
+    </div>
+    <div class="hud-controls">
+      <span class="hud-stat" id="status-text">Loading HDRI &amp; FBX model…</span>
+      <a class="btn" href="../index.html">← Home</a>
+      <a class="btn" href="../0024/drag360/index.html">Compare Click &amp; Drag 360° →</a>
+    </div>
+  </header>
+
+  <div id="three-container"></div>
+  <div class="hint-pill">Left-drag: Orbit · Right-drag: Pan · Scroll: Zoom (Requires local server / GitHub Pages)</div>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
+    import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
+
+    const statusText = document.getElementById('status-text');
+    const container = document.getElementById('three-container');
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 200);
+    camera.position.set(4.5, 2.2, 5.5);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 0.85;
+    container.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.target.set(0, 0.6, 0);
+    controls.update();
+
+    // Add a soft directional key light for crisp highlights alongside the HDRI environment
+    const dirLight = new THREE.DirectionalLight(0xfff4e0, 2.0);
+    dirLight.position.set(5, 8, 5);
+    scene.add(dirLight);
+
+    const pmremGenerator = new THREE.PMREMGenerator(renderer);
+    pmremGenerator.compileEquirectangularShader();
+
+    // Load original London street HDRI
+    new RGBELoader().load(
+      'urban_street_02_2k.hdr',
+      (texture) => {
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+        const envMap = pmremGenerator.fromEquirectangular(texture).texture;
+        scene.background = texture;
+        scene.environment = envMap;
+        pmremGenerator.dispose();
+        statusText.textContent = 'HDRI loaded · Loading Batmobile FBX…';
+      },
+      undefined,
+      () => {
+        statusText.textContent = 'Note: Serve via local server / GitHub Pages to load HDRI & FBX';
+      }
+    );
+
+    // Load clean 1989 Batmobile FBX and upgrade MeshPhongMaterial -> PBR MeshPhysicalMaterial so HDRI reflections work!
+    new FBXLoader().load(
+      '../1989_Batmobile_Sketchfab.fbx',
+      (fbx) => {
+        fbx.traverse((child) => {
+          if (!child.isMesh) return;
+          const oldMats = Array.isArray(child.material) ? child.material : [child.material];
+          const newMats = oldMats.map((m) => {
+            const name = (m.name || '').toLowerCase();
+            if (name.includes('windscreen') || name.includes('head_light')) {
+              return new THREE.MeshPhysicalMaterial({
+                color: new THREE.Color(0x2a333d),
+                metalness: 0.0,
+                roughness: 0.05,
+                transparent: true,
+                opacity: 0.35,
+                envMapIntensity: 1.5,
+              });
+            }
+            if (name.includes('front_light')) {
+              return new THREE.MeshStandardMaterial({
+                color: 0xffffff,
+                emissive: new THREE.Color(0xfff0b0),
+                emissiveIntensity: 2.5,
+              });
+            }
+            if (name.includes('rear_light')) {
+              return new THREE.MeshStandardMaterial({
+                color: 0x880000,
+                emissive: new THREE.Color(0xcc0505),
+                emissiveIntensity: 1.5,
+              });
+            }
+            if (name.includes('side_bits') || name.includes('alloy') || name.includes('exhaust') || name.includes('fan')) {
+              return new THREE.MeshStandardMaterial({
+                color: m.color ? m.color.clone() : new THREE.Color(0x888c94),
+                map: m.map || null,
+                metalness: 0.9,
+                roughness: 0.22,
+                envMapIntensity: 1.8,
+              });
+            }
+            return new THREE.MeshPhysicalMaterial({
+              color: m.color ? m.color.clone() : new THREE.Color(0x0a0a0c),
+              map: m.map || null,
+              metalness: 0.45,
+              roughness: 0.25,
+              clearcoat: 1.0,
+              clearcoatRoughness: 0.08,
+              envMapIntensity: 1.8,
+            });
+          });
+          child.material = Array.isArray(child.material) ? newMats : newMats[0];
+        });
+
+        const box = new THREE.Box3().setFromObject(fbx);
+        const size = box.getSize(new THREE.Vector3());
+        const center = box.getCenter(new THREE.Vector3());
+        const maxDim = Math.max(size.x, size.y, size.z);
+        const scale = 6.63 / maxDim;
+        fbx.scale.multiplyScalar(scale);
+        fbx.position.sub(center.multiplyScalar(scale));
+        fbx.position.y += (size.y * scale) / 2;
+        scene.add(fbx);
+        statusText.textContent = 'Ready · 1989 Batmobile + urban_street_02_2k.hdr';
+      },
+      undefined,
+      () => {
+        statusText.textContent = 'Serve via local server / GitHub Pages to load FBX';
+      }
+    );
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
+</body>
+</html>
