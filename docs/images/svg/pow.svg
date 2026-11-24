@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 240" width="360" height="240" role="img" aria-label="POW! comic effect outline">
+  <!-- Classic Comic Action Burst Outline -->
+  <polygon
+    points="180,12 206,52 256,22 252,72 320,56 286,104 348,124 290,152 330,198 262,188 248,228 198,196 164,228 136,190 66,214 84,164 20,146 74,112 34,64 106,76 112,24 158,54"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="4"
+    stroke-linejoin="round"
+  />
+  <text
+    x="180"
+    y="144"
+    text-anchor="middle"
+    font-family="Impact, 'Arial Black', sans-serif"
+    font-size="72"
+    font-weight="900"
+    font-style="italic"
+    letter-spacing="3"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="3"
+    transform="rotate(6 180 120)"
+  >POW!</text>
+</svg>

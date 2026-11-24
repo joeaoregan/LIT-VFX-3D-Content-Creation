@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en-IE">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1989 Batmobile — Blueprint Wireframe 360° Parallax Showcase</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bp-blue: #08245c;
+      --bp-accent: #7ec8ff;
+      --card-bg: rgba(6, 24, 62, 0.78);
+      --card-border: rgba(255, 255, 255, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bp-blue);
+      color: #f4f8ff;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Fixed 360° Blueprint Canvas Background */
+    .turntable-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: clip;
+      background-color: var(--bp-blue);
+    }
+
+    canvas#batmobile-canvas {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Top HUD Bar */
+    .hud-header {
+      position: fixed;
+      top: 1.25rem;
+      left: 1.5rem;
+      right: 1.5rem;
+      z-index: 20;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.85rem 1.25rem;
+      background: rgba(5, 20, 52, 0.84);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+    }
+
+    .hud-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 0.95rem;
+    }
+
+    .badge {
+      background: rgba(126, 200, 255, 0.16);
+      color: var(--bp-accent);
+      border: 1px solid var(--bp-accent);
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .hud-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.85rem;
+      font-size: 0.85rem;
+    }
+
+    .hud-stat {
+      font-variant-numeric: tabular-nums;
+      color: #cfe4ff;
+    }
+
+    .switch-link {
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 0.35rem 0.75rem;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      transition: background-color 0.2s ease;
+    }
+
+    .switch-link:hover {
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    /* Scroll Progress Bar */
+    .scroll-progress-track {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.12);
+      z-index: 30;
+    }
+
+    .scroll-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #7ec8ff, #ffffff);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.75);
+    }
+
+    /* 4-Stage Scroll Track */
+    .scroll-track {
+      position: relative;
+      z-index: 2;
+    }
+
+    .parallax-section {
+      min-height: 110vh;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: 7rem 5vw 4rem;
+      overflow: clip;
+    }
+
+    /* Alternate sides: Odd = Fact Left / SVG Right; Even = SVG Left / Fact Right */
+    .parallax-section:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+
+    .story-card {
+      max-width: 410px;
+      padding: 1.65rem 1.85rem;
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      box-shadow: 0 18px 40px rgba(0, 8, 28, 0.55);
+    }
+
+    .story-card h2 {
+      color: var(--bp-accent);
+      font-size: 1.25rem;
+      margin-bottom: 0.55rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .story-card p {
+      color: #e6f0ff;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    .story-card .meta {
+      margin-top: 0.95rem;
+      padding-top: 0.7rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.16);
+      font-size: 0.8rem;
+      color: #a9c8f0;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Corner Comic Effect SVG (enlarges in corner, pauses, shrinks back—never overlaps centre vehicle) */
+    .comic-svg-wrap {
+      width: clamp(190px, 23vw, 320px);
+      align-self: flex-start;
+      margin-top: 1.5rem;
+      pointer-events: none;
+    }
+
+    .comic-svg-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 0 12px rgba(126, 200, 255, 0.35));
+    }
+
+    @media (max-width: 820px) {
+      .parallax-section,
+      .parallax-section:nth-child(even) {
+        flex-direction: column;
+        justify-content: center;
+      }
+      .comic-svg-wrap {
+        align-self: center;
+        margin-top: 0;
+      }
+    }
+
+    /* Native CSS Scroll-Driven Animation: SVG scales up, pauses at full size, then shrinks back */
+    @supports ((animation-timeline: view()) and (animation-range: entry)) {
+      @keyframes comic-pop {
+        0% {
+          transform: scale(0.05);
+          opacity: 0;
+        }
+        28% {
+          transform: scale(1);
+          opacity: 0.95;
+        }
+        68% {
+          transform: scale(1);
+          opacity: 0.95;
+        }
+        100% {
+          transform: scale(0.05);
+          opacity: 0;
+        }
+      }
+
+      @keyframes card-parallax {
+        from {
+          transform: translateY(90px);
+          opacity: 0.2;
+        }
+        50% {
+          opacity: 1;
+        }
+        to {
+          transform: translateY(-90px);
+          opacity: 0.25;
+        }
+      }
+
+      .parallax-section {
+        view-timeline: --bp-section block;
+      }
+
+      .comic-svg-wrap {
+        @media (prefers-reduced-motion: no-preference) {
+          animation: comic-pop linear both;
+          animation-timeline: --bp-section;
+          animation-range: entry 10% exit 90%;
+        }
+      }
+
+      .story-card {
+        @media (prefers-reduced-motion: no-preference) {
+          animation: card-parallax linear both;
+          animation-timeline: --bp-section;
+          animation-range: entry 10% exit 90%;
+        }
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll-progress-track">
+    <div class="scroll-progress-bar" id="progress-bar"></div>
+  </div>
+
+  <header class="hud-header">
+    <div class="hud-title">
+      <span>1989 Batmobile — Blueprint Wireframe</span>
+      <span class="badge">10 FPS · 100 Frames (3.6° / step)</span>
+    </div>
+    <div class="hud-controls">
+      <span class="hud-stat" id="load-status">Loading frames: 0 / 100</span>
+      <span class="hud-stat" id="frame-readout">Frame: 0001 / 0100 (0.0°)</span>
+      <a class="switch-link" href="../index.html">← Home</a>
+      <a class="switch-link" href="../0024/10fps/index.html">v0024 Night Render →</a>
+    </div>
+  </header>
+
+  <div class="turntable-backdrop">
+    <canvas id="batmobile-canvas" width="1920" height="1080" aria-label="1989 Batmobile blueprint wireframe 360 degree turntable"></canvas>
+  </div>
+
+  <main class="scroll-track">
+    <!-- Section 1: Fact Left, ZAP! Right -->
+    <section class="parallax-section">
+      <article class="story-card">
+        <h2>01 · Built on a Chevy Impala Chassis</h2>
+        <p>Production designer Anton Furst built the 1989 Batmobile on a stretched 1967 Chevrolet Impala chassis powered by a Chevy V8, stretched to over 6.6 metres long to give it that unmistakable long-bonnet silhouette.</p>
+        <div class="meta">
+          <span>1989 Batmobile Fact</span>
+          <span>0° – 90°</span>
+        </div>
+      </article>
+      <div class="comic-svg-wrap">
+        <img src="../docs/images/svg/zap.svg" alt="ZAP! comic effect" />
+      </div>
+    </section>
+
+    <!-- Section 2: POW! Left, Fact Right -->
+    <section class="parallax-section">
+      <article class="story-card">
+        <h2>02 · Real Harrier &amp; Jet Parts</h2>
+        <p>To make the turbine intake look authentic, Furst's crew used real aircraft components—including a British Harrier jump-jet nose cone and a genuine jet engine turbine—for the front intake and rear exhaust.</p>
+        <div class="meta">
+          <span>1989 Batmobile Fact</span>
+          <span>90° – 180°</span>
+        </div>
+      </article>
+      <div class="comic-svg-wrap">
+        <img src="../docs/images/svg/pow.svg" alt="POW! comic effect" />
+      </div>
+    </section>
+
+    <!-- Section 3: Fact Left, BOOM! Right -->
+    <section class="parallax-section">
+      <article class="story-card">
+        <h2>03 · Pinewood Studios Gotham</h2>
+        <p>Tim Burton's 1989 <em>Batman</em> was filmed almost entirely on massive backlot sets at Pinewood Studios in the UK, where Anton Furst won the Academy Award for Best Art Direction.</p>
+        <div class="meta">
+          <span>1989 Movie Trivia</span>
+          <span>180° – 270°</span>
+        </div>
+      </article>
+      <div class="comic-svg-wrap">
+        <img src="../docs/images/svg/boom.svg" alt="BOOM! comic effect" />
+      </div>
+    </section>
+
+    <!-- Section 4: KAPOW! Left, Fact Right -->
+    <section class="parallax-section">
+      <article class="story-card">
+        <h2>04 · Cocoon Mode &amp; Grappling Hook</h2>
+        <p>Two full-size hero cars were built for filming at Pinewood, plus a third lightweight shell for the iconic "Shields" armoured cocoon sequence and the tight grappling-hook corner turn.</p>
+        <div class="meta">
+          <span>Full 360° Blueprint Complete</span>
+          <span>270° – 360°</span>
+        </div>
+      </article>
+      <div class="comic-svg-wrap">
+        <img src="../docs/images/svg/kapow.svg" alt="KAPOW! comic effect" />
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const TOTAL_FRAMES = 100;
+    const canvas = document.getElementById('batmobile-canvas');
+    const ctx = canvas.getContext('2d');
+    const loadStatus = document.getElementById('load-status');
+    const frameReadout = document.getElementById('frame-readout');
+    const progressBar = document.getElementById('progress-bar');
+
+    const images = new Array(TOTAL_FRAMES);
+    let loadedCount = 0;
+    let currentFrameIndex = 0;
+
+    function pad4(n) {
+      return String(n).padStart(4, '0');
+    }
+
+    function drawFrame(index) {
+      const img = images[index];
+      if (img && img.complete && img.naturalWidth > 0) {
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      }
+      const deg = ((index / TOTAL_FRAMES) * 360).toFixed(1);
+      frameReadout.textContent = `Frame: ${pad4(index + 1)} / ${pad4(TOTAL_FRAMES)} (${deg}°)`;
+    }
+
+    for (let i = 0; i < TOTAL_FRAMES; i++) {
+      const img = new Image();
+      img.src = `frames/frame_${pad4(i + 1)}.jpg`;
+      img.onload = () => {
+        loadedCount++;
+        loadStatus.textContent = loadedCount === TOTAL_FRAMES
+          ? `All ${TOTAL_FRAMES} frames ready`
+          : `Loading frames: ${loadedCount} / ${TOTAL_FRAMES}`;
+        if (i === 0) {
+          drawFrame(0);
+        }
+      };
+      images[i] = img;
+    }
+
+    function onScrollScrub() {
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const scrollFraction = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+      progressBar.style.width = `${(scrollFraction * 100).toFixed(2)}%`;
+
+      const targetIndex = Math.min(
+        TOTAL_FRAMES - 1,
+        Math.floor(scrollFraction * TOTAL_FRAMES)
+      );
+
+      if (targetIndex !== currentFrameIndex) {
+        currentFrameIndex = targetIndex;
+        requestAnimationFrame(() => drawFrame(currentFrameIndex));
+      }
+    }
+
+    window.addEventListener('scroll', onScrollScrub, { passive: true });
+    window.addEventListener('resize', onScrollScrub, { passive: true });
+
+    // Fallback for browsers without CSS Scroll-Driven Animation support
+    if (!CSS.supports('(animation-timeline: view()) and (animation-range: entry)') &&
+        !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const sections = document.querySelectorAll('.parallax-section');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const svg = entry.target.querySelector('.comic-svg-wrap');
+          const card = entry.target.querySelector('.story-card');
+          const rect = entry.target.getBoundingClientRect();
+          const progress = Math.min(1, Math.max(0, 1 - (rect.top + rect.height) / (window.innerHeight + rect.height)));
+          if (svg) {
+            const s = progress < 0.28 ? progress / 0.28 : (progress > 0.68 ? (1 - progress) / 0.32 : 1);
+            svg.style.transform = `scale(${Math.max(0.05, s).toFixed(3)})`;
+            svg.style.opacity = Math.max(0, Math.min(1, s * 1.2)).toFixed(2);
+          }
+          if (card) {
+            card.style.transform = `translateY(${((0.5 - progress) * 140).toFixed(1)}px)`;
+          }
+        });
+      }, { threshold: Array.from({ length: 21 }, (_, i) => i / 20) });
+      sections.forEach(s => observer.observe(s));
+    }
+  </script>
+</body>
+</html>

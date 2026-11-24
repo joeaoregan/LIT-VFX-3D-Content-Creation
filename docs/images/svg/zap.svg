@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 240" width="360" height="240" role="img" aria-label="ZAP! comic effect outline">
+  <!-- Jagged Comic Starburst Outline -->
+  <polygon
+    points="180,14 214,56 276,26 266,82 342,78 292,124 346,168 274,174 288,224 218,194 180,228 142,194 72,224 86,174 14,168 68,124 18,78 94,82 84,26 146,56"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="4"
+    stroke-linejoin="round"
+  />
+  <!-- White-Outline Comic Lettering -->
+  <text
+    x="180"
+    y="142"
+    text-anchor="middle"
+    font-family="Impact, 'Arial Black', sans-serif"
+    font-size="74"
+    font-weight="900"
+    font-style="italic"
+    letter-spacing="4"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="3"
+    transform="rotate(-8 180 120)"
+  >ZAP!</text>
+</svg>

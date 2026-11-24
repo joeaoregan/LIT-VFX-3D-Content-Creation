@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 240" width="380" height="240" role="img" aria-label="KAPOW! comic effect outline">
+  <!-- Sharp Dynamic Burst Outline -->
+  <polygon
+    points="190,12 218,50 274,20 268,72 344,58 302,108 366,132 300,164 342,208 270,194 248,228 198,196 160,228 130,194 54,212 80,162 16,134 76,102 36,56 112,72 118,20 166,50"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="4"
+    stroke-linejoin="round"
+  />
+  <text
+    x="190"
+    y="142"
+    text-anchor="middle"
+    font-family="Impact, 'Arial Black', sans-serif"
+    font-size="62"
+    font-weight="900"
+    font-style="italic"
+    letter-spacing="2"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="3"
+    transform="rotate(5 190 120)"
+  >KAPOW!</text>
+</svg>

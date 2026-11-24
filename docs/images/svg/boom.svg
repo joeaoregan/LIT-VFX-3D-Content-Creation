@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 240" width="380" height="240" role="img" aria-label="BOOM! comic effect outline">
+  <!-- Heavy Explosion Burst Outline -->
+  <polygon
+    points="190,10 222,48 278,18 272,70 348,54 308,106 368,130 304,162 346,208 274,194 252,230 202,196 162,230 132,194 56,214 82,162 14,136 74,104 32,54 110,70 116,18 164,48"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="4"
+    stroke-linejoin="round"
+  />
+  <text
+    x="190"
+    y="144"
+    text-anchor="middle"
+    font-family="Impact, 'Arial Black', sans-serif"
+    font-size="68"
+    font-weight="900"
+    font-style="italic"
+    letter-spacing="3"
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="3"
+    transform="rotate(-5 190 120)"
+  >BOOM!</text>
+</svg>

@@ -45,3 +45,4 @@
 * **Interactive 360° Parallax Scroll Pages**:
   * **v0014**: [8 FPS](0014/8fps/index.html) · [10 FPS](0014/10fps/index.html) · [24 FPS](0014/full_240fps24/index.html)
   * **v0024**: [8 FPS](0024/8fps/index.html) · [10 FPS](0024/10fps/index.html) · [24 FPS](0024/full_240fps24/index.html)
+  * **Blueprint Wireframe**: [10 FPS + Comic Trivia](blueprint/index.html)
