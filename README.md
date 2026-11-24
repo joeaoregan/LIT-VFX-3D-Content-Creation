@@ -37,7 +37,7 @@
 
 ## Showcase Links
 
-* **Interactive 3D Model (Sketchfab)**: [View 1989 Batmobile on Sketchfab](https://sketchfab.com/3d-models/1989-batmobile-e9234d292c5646eaa4c3068769edb40a) (`1989_Batmobile_Sketchfab.fbx`)
+* **Interactive 3D Model (Sketchfab)**: [View 1989 Batmobile on Sketchfab](https://sketchfab.com/3d-models/1989-batmobile-e9234d292c5646eaa4c3068769edb40a) (`1989_Batmobile.fbx`)
 * **YouTube Turntable Renders**:
   * [v0014 — Gotham Night Volumetrics](https://youtu.be/OVfGsIVgiR0)
   * [v0024 — Bat-Signal, 6 Recessed Beams & Smoothed Wheel Arches](https://youtu.be/h6Unr17XtrM)
