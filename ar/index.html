@@ -111,6 +111,36 @@
       box-shadow: 0 10px 28px rgba(245, 185, 66, 0.4);
     }
 
+    .ar-reset-btn {
+      display: none;
+      position: fixed;
+      bottom: max(1.5rem, calc(env(safe-area-inset-bottom) + 1rem));
+      right: 1.25rem;
+      z-index: 20;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.5rem 0.85rem;
+      border-radius: 999px;
+      background: rgba(8, 11, 18, 0.65);
+      backdrop-filter: blur(8px);
+      color: #f0f2f7;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+    }
+
+    .ar-reset-btn:active {
+      background: rgba(245, 185, 66, 0.28);
+      border-color: var(--accent);
+    }
+
+    model-viewer[ar-status="session-started"] .ar-reset-btn,
+    model-viewer[ar-status="object-placed"] .ar-reset-btn {
+      display: inline-flex;
+    }
+
     @media (max-width: 600px) {
       .hud-title {
         font-size: 0.82rem;
@@ -135,10 +165,12 @@
   </header>
 
   <model-viewer
+    id="batmobile-ar"
     src="../1989_Batmobile.glb?v=3"
     alt="1989 Batmobile 3D Model"
     ar
     ar-modes="webxr scene-viewer quick-look"
+    ar-placement="floor"
     ar-scale="auto"
     camera-controls
     touch-action="pan-y"
@@ -148,6 +180,43 @@
     <button slot="ar-button" class="ar-button">
       View in Your Space (AR)
     </button>
+    <button type="button" id="ar-reset-btn" class="ar-reset-btn" aria-label="Reset model position">
+      ↺ Reset
+    </button>
   </model-viewer>
+
+  <script>
+    const viewer = document.getElementById('batmobile-ar');
+    const resetBtn = document.getElementById('ar-reset-btn');
+
+    // Prevent tapping the discreet Reset button from moving the AR object directly
+    resetBtn.addEventListener('beforexrselect', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    });
+
+    resetBtn.addEventListener('click', (event) => {
+      event.stopPropagation();
+
+      // Reset orientation and framing
+      viewer.orientation = '0deg 0deg 0deg';
+      viewer.updateFraming();
+
+      // Re-place on the floor in front of where the camera is currently facing
+      const cx = window.innerWidth * 0.5;
+      const cy = window.innerHeight * 0.65;
+      const opts = {
+        bubbles: true,
+        cancelable: true,
+        pointerId: 1,
+        pointerType: 'touch',
+        isPrimary: true,
+        clientX: cx,
+        clientY: cy
+      };
+      viewer.dispatchEvent(new PointerEvent('pointerdown', opts));
+      viewer.dispatchEvent(new PointerEvent('pointerup', opts));
+    });
+  </script>
 </body>
 </html>
